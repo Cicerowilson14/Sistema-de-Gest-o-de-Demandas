@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso da equipe · TI Cecape</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="tema.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body class="pagina-acesso">
+    <div class="fundo-decorativo" aria-hidden="true"></div>
+
+    <!-- Painel lateral de apresentação (só aparece em telas largas) -->
+    <section class="vitrine-acesso">
+        <div class="marca">
+            <div class="marca-icone">TI</div>
+            <div class="marca-texto">
+                <strong>Demandas Cecape</strong>
+                <span>Central do setor de TI</span>
+            </div>
+        </div>
+
+        <h1 class="vitrine-titulo">Cada chamado no lugar certo,<br>do pedido à entrega.</h1>
+        <p class="vitrine-descricao">
+            Quadro kanban, histórico completo e indicadores de desempenho da equipe em um só painel.
+        </p>
+
+        <ul class="vitrine-lista">
+            <li><span class="vitrine-marcador" data-cor="pendente"></span> Chamados organizados por status e prioridade</li>
+            <li><span class="vitrine-marcador" data-cor="andamento"></span> Responsáveis atribuídos em um clique</li>
+            <li><span class="vitrine-marcador" data-cor="finalizada"></span> Relatórios exportáveis em Excel e PDF</li>
+        </ul>
+    </section>
+
+    <!-- Cartão de autenticação -->
+    <main class="cartao-acesso">
+
+        <!-- TELA DE LOGIN -->
+        <div class="vista-acesso ativo" id="vista-login">
+            <div class="cabecalho-acesso">
+                <span class="selo-restrito">Acesso restrito</span>
+                <h2>Entrar no painel</h2>
+                <p>Use seu e-mail corporativo da Cecape.</p>
+            </div>
+
+            <div id="mensagemLogin" class="caixa-mensagem"></div>
+
+            <form id="formularioLogin" novalidate>
+                <div class="grupo-campo">
+                    <label for="loginEmail">E-mail corporativo</label>
+                    <input type="email" id="loginEmail" placeholder="ti@faculdadececape.edu.br" autocomplete="username">
+                </div>
+                <div class="grupo-campo">
+                    <label for="loginSenha">Senha</label>
+                    <div class="campo-com-botao">
+                        <input type="password" id="loginSenha" placeholder="Sua senha" autocomplete="current-password">
+                        <button type="button" class="botao-olho" onclick="alternarVisibilidadeSenha('loginSenha', this)" aria-label="Mostrar senha">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="botao botao-primario botao-largura-total">Entrar no quadro</button>
+            </form>
+
+            <div class="link-alternar" onclick="alternarVistaAcesso('cadastro')">
+                Ainda não tem acesso? <span>Cadastre-se</span>
+            </div>
+        </div>
+
+        <!-- TELA DE CADASTRO -->
+        <div class="vista-acesso" id="vista-cadastro">
+            <div class="cabecalho-acesso">
+                <span class="selo-restrito">Novo integrante</span>
+                <h2>Criar acesso da TI</h2>
+                <p>Somente e-mails @faculdadececape.edu.br.</p>
+            </div>
+
+            <div id="mensagemCadastro" class="caixa-mensagem"></div>
+
+            <form id="formularioCadastro" novalidate>
+                <div class="linha-formulario">
+                    <div class="grupo-campo">
+                        <label for="cadastroNome">Nome</label>
+                        <input type="text" id="cadastroNome">
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="cadastroSobrenome">Sobrenome</label>
+                        <input type="text" id="cadastroSobrenome">
+                    </div>
+                </div>
+                <div class="grupo-campo">
+                    <label for="cadastroEmail">E-mail corporativo</label>
+                    <input type="email" id="cadastroEmail" placeholder="nome.sobrenome@faculdadececape.edu.br">
+                </div>
+                <div class="grupo-campo">
+                    <label for="cadastroSenha">Senha</label>
+                    <div class="campo-com-botao">
+                        <input type="password" id="cadastroSenha" autocomplete="new-password">
+                        <button type="button" class="botao-olho" onclick="alternarVisibilidadeSenha('cadastroSenha', this)" aria-label="Mostrar senha">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="grupo-campo">
+                    <label for="cadastroRepetirSenha">Repetir senha</label>
+                    <div class="campo-com-botao">
+                        <input type="password" id="cadastroRepetirSenha" autocomplete="new-password">
+                        <button type="button" class="botao-olho" onclick="alternarVisibilidadeSenha('cadastroRepetirSenha', this)" aria-label="Mostrar senha">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="botao botao-primario botao-largura-total">Criar acesso</button>
+            </form>
+
+            <div class="link-alternar" onclick="alternarVistaAcesso('login')">
+                Já possui acesso? <span>Fazer login</span>
+            </div>
+        </div>
+
+        <div class="rodape-acesso">
+            Não é da equipe de TI? <a href="portal.html">Abrir o portal do solicitante</a>
+        </div>
+    </main>
+
+    <script src="login.js"></script>
+</body>
+</html>

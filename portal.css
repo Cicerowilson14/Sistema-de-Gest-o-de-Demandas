@@ -1,0 +1,249 @@
+/* =========================================================
+   PORTAL DO SOLICITANTE — estilos específicos
+   (tema.css traz o sistema de design; login.css traz a
+    tela de acesso, reaproveitada aqui)
+========================================================= */
+
+.selo-solicitante {
+    color: var(--cor-info);
+    background: rgba(22, 184, 166, 0.12);
+    border-color: rgba(22, 184, 166, 0.28);
+}
+
+.link-esqueci {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 0.82rem;
+    color: var(--cor-texto-fraco);
+    cursor: pointer;
+}
+.link-esqueci:hover { color: var(--cor-texto-suave); text-decoration: underline; }
+
+/* =========================================================
+   ÁREA LOGADA
+========================================================= */
+.area-painel { padding: 20px; min-height: 100vh; }
+.conteudo-painel { max-width: 1100px; margin: 0 auto; }
+
+/* Resumo por status */
+.resumo-solicitacoes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px;
+    margin-bottom: 30px;
+}
+
+.resumo-item {
+    background: var(--cor-painel);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--duracao) ease, border-color var(--duracao) ease;
+}
+.resumo-item:hover { transform: translateY(-2px); border-color: var(--cor-borda-forte); }
+
+.resumo-item::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--cor-acento-resumo, var(--cor-texto-fraco));
+}
+.resumo-item[data-status="pendente"] { --cor-acento-resumo: var(--cor-pendente); }
+.resumo-item[data-status="em_andamento"] { --cor-acento-resumo: var(--cor-andamento); }
+.resumo-item[data-status="finalizada"] { --cor-acento-resumo: var(--cor-finalizada); }
+.resumo-item[data-status="cancelada"] { --cor-acento-resumo: var(--cor-cancelada); }
+
+.resumo-valor { font-family: var(--fonte-titulo); font-size: 1.8rem; font-weight: 700; line-height: 1; }
+.resumo-rotulo { font-size: 0.82rem; color: var(--cor-texto-suave); }
+
+/* Cabeçalho da seção + filtros */
+.cabecalho-secao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.titulo-secao { font-size: 1.15rem; }
+
+.filtros-solicitacoes {
+    display: flex;
+    gap: 4px;
+    background: var(--cor-fundo-alt);
+    border: 1px solid var(--cor-borda);
+    padding: 4px;
+    border-radius: 10px;
+}
+
+.filtro {
+    background: transparent;
+    border: none;
+    color: var(--cor-texto-suave);
+    font-family: var(--fonte-corpo);
+    font-size: 0.83rem;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: color var(--duracao) ease, background var(--duracao) ease;
+}
+.filtro:hover { color: var(--cor-texto); }
+.filtro.ativo { color: #05221f; background: linear-gradient(135deg, var(--cor-info), var(--cor-info-forte)); }
+
+.secao-solicitacoes { margin-bottom: 30px; }
+
+/* =========================================================
+   CARTÃO DE SOLICITAÇÃO
+========================================================= */
+.lista-solicitacoes { display: flex; flex-direction: column; gap: 14px; }
+
+.cartao-solicitacao {
+    background: var(--cor-painel);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio-grande);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: border-color var(--duracao) ease, transform var(--duracao) ease;
+    animation: entrada-solicitacao 0.4s ease backwards;
+}
+.cartao-solicitacao:hover { border-color: var(--cor-borda-forte); transform: translateY(-2px); }
+
+@keyframes entrada-solicitacao {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.solicitacao-topo { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; flex-wrap: wrap; }
+.solicitacao-identificacao { display: flex; flex-direction: column; gap: 4px; }
+.solicitacao-titulo { font-size: 1.05rem; font-weight: 600; }
+.solicitacao-protocolo { font-size: 0.74rem; color: var(--cor-texto-fraco); letter-spacing: 0.03em; }
+
+.solicitacao-acoes { display: flex; gap: 6px; align-items: center; }
+
+.botao-acao {
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda-forte);
+    color: var(--cor-texto-suave);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color var(--duracao) ease, border-color var(--duracao) ease, background var(--duracao) ease;
+}
+.botao-acao:hover { color: var(--cor-texto); border-color: var(--cor-texto-fraco); }
+.botao-acao--excluir:hover { color: var(--cor-cancelada); border-color: var(--cor-cancelada); background: rgba(244, 63, 94, 0.08); }
+
+.solicitacao-bloqueada {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.76rem;
+    color: var(--cor-texto-fraco);
+    border: 1px dashed var(--cor-borda-forte);
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+/* Dados da solicitação */
+.solicitacao-dados {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    background: var(--cor-fundo-alt);
+    border: 1px solid var(--cor-borda);
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+.dado-item { display: flex; flex-direction: column; gap: 3px; }
+.dado-rotulo { font-size: 0.72rem; color: var(--cor-texto-fraco); }
+.dado-valor { font-size: 0.88rem; color: var(--cor-texto); font-weight: 500; }
+
+.solicitacao-observacoes { font-size: 0.85rem; color: var(--cor-texto-suave); line-height: 1.5; }
+
+/* =========================================================
+   TRILHA DE PROGRESSO (etapas do chamado)
+========================================================= */
+.trilha-progresso { display: flex; align-items: flex-start; padding-top: 4px; }
+
+.etapa { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 7px; position: relative; text-align: center; }
+
+/* Linha ligando as etapas */
+.etapa:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 9px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: var(--cor-superficie-alta);
+}
+.etapa.concluida:not(:last-child)::after { background: var(--cor-etapa, var(--cor-info)); }
+
+.etapa-marcador {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--cor-fundo-alt);
+    border: 2px solid var(--cor-superficie-alta);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--duracao) ease, border-color var(--duracao) ease;
+}
+.etapa.concluida .etapa-marcador { background: var(--cor-etapa, var(--cor-info)); border-color: var(--cor-etapa, var(--cor-info)); }
+
+/* Etapa em que a solicitação está parada agora — pulsa */
+.etapa.atual .etapa-marcador {
+    border-color: var(--cor-etapa, var(--cor-info));
+    background: var(--cor-fundo-alt);
+    animation: pulsar-etapa 1.9s ease-in-out infinite;
+}
+
+@keyframes pulsar-etapa {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--cor-etapa, var(--cor-info)) 55%, transparent); }
+    60% { box-shadow: 0 0 0 7px transparent; }
+}
+
+.etapa-nome { font-size: 0.74rem; color: var(--cor-texto-fraco); }
+.etapa.concluida .etapa-nome, .etapa.atual .etapa-nome { color: var(--cor-texto-suave); }
+.etapa.atual .etapa-nome { color: var(--cor-etapa, var(--cor-info)); font-weight: 600; }
+
+/* Trilha de uma solicitação cancelada */
+.trilha-progresso.trilha-cancelada { --cor-etapa: var(--cor-cancelada); }
+.trilha-progresso.trilha-concluida { --cor-etapa: var(--cor-finalizada); }
+
+/* Estado vazio da lista */
+.solicitacoes-vazio {
+    background: var(--cor-painel);
+    border: 1px dashed var(--cor-borda-forte);
+    border-radius: var(--raio-grande);
+    padding: 44px 20px;
+    text-align: center;
+    color: var(--cor-texto-fraco);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.solicitacoes-vazio strong { color: var(--cor-texto-suave); font-weight: 600; }
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+@media (max-width: 680px) {
+    .solicitacao-topo { flex-direction: column; }
+    .etapa-nome { font-size: 0.68rem; }
+}

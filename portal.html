@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal do Solicitante · Cecape</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="tema.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="portal.css">
+</head>
+<body>
+    <div class="fundo-decorativo" aria-hidden="true"></div>
+
+    <!-- =====================================================
+         ÁREA DE AUTENTICAÇÃO DO SOLICITANTE
+    ====================================================== -->
+    <div class="pagina-acesso" id="area-acesso">
+
+        <section class="vitrine-acesso">
+            <div class="marca">
+                <div class="marca-icone">C</div>
+                <div class="marca-texto">
+                    <strong>Portal do Solicitante</strong>
+                    <span>Faculdade Cecape</span>
+                </div>
+            </div>
+
+            <h1 class="vitrine-titulo">Peça o equipamento<br>e acompanhe até a entrega.</h1>
+            <p class="vitrine-descricao">
+                Solicite data show, TV, som ou suporte técnico e veja em tempo real em que etapa a equipe de TI está.
+            </p>
+
+            <ul class="vitrine-lista">
+                <li><span class="vitrine-marcador" data-cor="pendente"></span> Solicite em menos de um minuto</li>
+                <li><span class="vitrine-marcador" data-cor="andamento"></span> Acompanhe o andamento por etapas</li>
+                <li><span class="vitrine-marcador" data-cor="finalizada"></span> Edite ou cancele enquanto estiver em aberto</li>
+            </ul>
+        </section>
+
+        <main class="cartao-acesso">
+
+            <!-- LOGIN -->
+            <div class="vista-acesso ativo" id="vista-login">
+                <div class="cabecalho-acesso">
+                    <span class="selo-restrito selo-solicitante">Solicitante</span>
+                    <h2>Entrar no portal</h2>
+                    <p>Use seu e-mail institucional ou nome de usuário.</p>
+                </div>
+
+                <div id="mensagemLogin" class="caixa-mensagem"></div>
+
+                <form id="formularioLoginSolicitante" novalidate>
+                    <div class="grupo-campo">
+                        <label for="loginEmail">E-mail ou nome de usuário</label>
+                        <input type="text" id="loginEmail" placeholder="seu.nome@faculdadececape.edu.br" autocomplete="username">
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="loginSenha">Senha</label>
+                        <div class="campo-com-botao">
+                            <input type="password" id="loginSenha" autocomplete="current-password">
+                            <button type="button" class="botao-olho" onclick="alternarVisibilidadeSenha('loginSenha', this)" aria-label="Mostrar senha">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="botao botao-primario botao-largura-total">Entrar</button>
+                </form>
+
+                <div class="link-esqueci" onclick="recuperarSenha()">Esqueci minha senha</div>
+
+                <div class="link-alternar" onclick="alternarVistaAcesso('cadastro')">
+                    Novo por aqui? <span>Cadastre-se</span>
+                </div>
+            </div>
+
+            <!-- CADASTRO -->
+            <div class="vista-acesso" id="vista-cadastro">
+                <div class="cabecalho-acesso">
+                    <span class="selo-restrito selo-solicitante">Nova conta</span>
+                    <h2>Criar cadastro</h2>
+                    <p>Somente e-mails @faculdadececape.edu.br.</p>
+                </div>
+
+                <div id="mensagemCadastro" class="caixa-mensagem"></div>
+
+                <form id="formularioCadastroSolicitante" novalidate>
+                    <div class="linha-formulario">
+                        <div class="grupo-campo">
+                            <label for="cadastroNome">Nome</label>
+                            <input type="text" id="cadastroNome">
+                        </div>
+                        <div class="grupo-campo">
+                            <label for="cadastroSobrenome">Sobrenome</label>
+                            <input type="text" id="cadastroSobrenome">
+                        </div>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="cadastroSetor">Setor</label>
+                        <input type="text" id="cadastroSetor" placeholder="Ex: Coordenação, Biblioteca…">
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="cadastroEmail">E-mail institucional</label>
+                        <input type="email" id="cadastroEmail" placeholder="seu.nome@faculdadececape.edu.br">
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="cadastroSenha">Senha</label>
+                        <div class="campo-com-botao">
+                            <input type="password" id="cadastroSenha" autocomplete="new-password">
+                            <button type="button" class="botao-olho" onclick="alternarVisibilidadeSenha('cadastroSenha', this)" aria-label="Mostrar senha">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="botao botao-primario botao-largura-total">Criar conta</button>
+                </form>
+
+                <div class="link-alternar" onclick="alternarVistaAcesso('login')">
+                    Já tem conta? <span>Faça login</span>
+                </div>
+            </div>
+
+            <div class="rodape-acesso">
+                É da equipe de TI? <a href="login.html">Acessar o painel interno</a>
+            </div>
+        </main>
+    </div>
+
+    <!-- =====================================================
+         ÁREA LOGADA — ACOMPANHAMENTO DAS SOLICITAÇÕES
+    ====================================================== -->
+    <div id="area-painel" class="area-painel" style="display: none;">
+        <header class="cabecalho">
+            <div class="marca">
+                <div class="marca-icone">C</div>
+                <div class="marca-texto">
+                    <strong>Portal do Solicitante</strong>
+                    <span>Faculdade Cecape</span>
+                </div>
+            </div>
+
+            <div class="menu-usuario">
+                <div class="usuario-info">
+                    <div class="usuario-avatar" id="avatarSolicitante">?</div>
+                    <span class="usuario-saudacao">Olá, <strong id="nomeSolicitante">Usuário</strong></span>
+                </div>
+                <div class="usuario-acoes">
+                    <button class="botao botao-primario" onclick="abrirModalSolicitacao()">+ Nova solicitação</button>
+                    <button class="botao botao-secundario" onclick="sairDoPortal()">Sair</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="conteudo-painel">
+            <div class="resumo-solicitacoes">
+                <div class="resumo-item" data-status="pendente">
+                    <span class="resumo-valor" id="resumoPendentes">0</span>
+                    <span class="resumo-rotulo">Aguardando a TI</span>
+                </div>
+                <div class="resumo-item" data-status="em_andamento">
+                    <span class="resumo-valor" id="resumoAndamento">0</span>
+                    <span class="resumo-rotulo">Em análise</span>
+                </div>
+                <div class="resumo-item" data-status="finalizada">
+                    <span class="resumo-valor" id="resumoFinalizadas">0</span>
+                    <span class="resumo-rotulo">Concluídas</span>
+                </div>
+                <div class="resumo-item" data-status="cancelada">
+                    <span class="resumo-valor" id="resumoCanceladas">0</span>
+                    <span class="resumo-rotulo">Canceladas</span>
+                </div>
+            </div>
+
+            <div class="secao-solicitacoes">
+                <div class="cabecalho-secao">
+                    <h2 class="titulo-secao">Minhas solicitações</h2>
+                    <div class="filtros-solicitacoes" id="filtrosSolicitacoes">
+                        <button class="filtro ativo" data-filtro="todas" onclick="filtrarSolicitacoes('todas', this)">Todas</button>
+                        <button class="filtro" data-filtro="abertas" onclick="filtrarSolicitacoes('abertas', this)">Em aberto</button>
+                        <button class="filtro" data-filtro="encerradas" onclick="filtrarSolicitacoes('encerradas', this)">Encerradas</button>
+                    </div>
+                </div>
+
+                <div class="lista-solicitacoes" id="listaSolicitacoes"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- =====================================================
+         MODAL — NOVA SOLICITAÇÃO / EDIÇÃO
+    ====================================================== -->
+    <div id="modalSolicitacao" class="modal">
+        <div class="modal-conteudo">
+            <div class="modal-cabecalho">
+                <h2 id="tituloModalSolicitacao">Solicitar equipamento ou serviço</h2>
+                <button class="fechar-modal" onclick="fecharModalSolicitacao()" aria-label="Fechar">&times;</button>
+            </div>
+
+            <form id="formularioSolicitacao" novalidate>
+                <div class="grupo-campo">
+                    <label for="campoEquipamento">O que você precisa?</label>
+                    <input type="text" id="campoEquipamento" placeholder="Ex: Data show, TV, caixa de som…" required>
+                </div>
+
+                <div class="grupo-campo">
+                    <label for="campoSala">Sala ou local</label>
+                    <select id="campoSala" required>
+                        <option value="">Selecione…</option>
+                        <option value="Sala 01">Sala 01 (1º andar)</option>
+                        <option value="Sala 02">Sala 02 (1º andar)</option>
+                        <option value="Sala 03">Sala 03 (1º andar)</option>
+                        <option value="Sala 04">Sala 04 (1º andar)</option>
+                        <option value="Sala 05">Sala 05 (1º andar)</option>
+                        <option value="Sala 06">Sala 06 (1º andar)</option>
+                        <option value="Sala 07">Sala 07</option>
+                        <option value="Sala 08">Sala 08</option>
+                        <option value="Sala 09">Sala 09</option>
+                        <option value="Sala 10">Sala 10</option>
+                        <option value="Sala 11">Sala 11</option>
+                        <option value="Sala 12">Sala 12</option>
+                        <option value="Sala 13">Sala 13</option>
+                        <option value="Sala 14">Sala 14</option>
+                        <option value="Sala 15">Sala 15</option>
+                        <option value="Pré-clínico 1">Pré-clínico 1</option>
+                        <option value="Pré-clínico 2">Pré-clínico 2</option>
+                        <option value="Pré-clínico 3">Pré-clínico 3</option>
+                        <option value="Lab. Informática">Lab. Informática</option>
+                        <option value="Lab. Radiologia">Lab. Radiologia</option>
+                        <option value="Auditório">Auditório</option>
+                    </select>
+                </div>
+
+                <div class="linha-formulario">
+                    <div class="grupo-campo">
+                        <label for="campoData">Data</label>
+                        <input type="date" id="campoData" required>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="campoHoraInicio">Início</label>
+                        <input type="time" id="campoHoraInicio" required>
+                    </div>
+                    <div class="grupo-campo">
+                        <label for="campoHoraFim">Fim</label>
+                        <input type="time" id="campoHoraFim" required>
+                    </div>
+                </div>
+
+                <div class="grupo-campo">
+                    <label for="campoObservacoes">Observações</label>
+                    <textarea id="campoObservacoes" rows="3" placeholder="Algum detalhe que a TI precisa saber?"></textarea>
+                </div>
+
+                <button type="submit" class="botao botao-primario botao-largura-total" id="botaoEnviarSolicitacao">Enviar solicitação</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="portal.js"></script>
+</body>
+</html>

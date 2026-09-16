@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Demandas · TI Cecape</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="tema.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="fundo-decorativo" aria-hidden="true"></div>
+
+    <header class="cabecalho">
+        <div class="marca">
+            <div class="marca-icone">TI</div>
+            <div class="marca-texto">
+                <strong>Demandas Cecape</strong>
+                <span>Central do setor de TI</span>
+            </div>
+        </div>
+
+        <nav class="nav-abas">
+            <button class="aba ativo" data-aba="kanban" onclick="alternarAba('kanban')">Quadro</button>
+            <button class="aba" data-aba="relatorios" onclick="alternarAba('relatorios')">Relatórios &amp; histórico</button>
+        </nav>
+
+        <div class="menu-usuario">
+            <div class="usuario-info">
+                <div class="usuario-avatar" id="avatarUsuario">?</div>
+                <span class="usuario-saudacao">Olá, <strong id="nomeUsuario">Usuário</strong></span>
+            </div>
+            <div class="usuario-acoes">
+                <button class="botao botao-primario" id="botaoNovaDemanda" onclick="abrirModal()">+ Nova demanda</button>
+                <button class="botao botao-secundario" onclick="sair()">Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- VISTA: QUADRO KANBAN -->
+    <main id="vista-kanban" class="secao-vista ativo">
+        <div class="quadro-kanban">
+
+            <div class="coluna-kanban" data-status="pendente">
+                <div class="cabecalho-coluna">
+                    <h3 class="titulo-coluna">
+                        <svg class="icone-status" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+                        Pendentes
+                    </h3>
+                    <span class="contador-coluna" id="contagem-pendente">0</span>
+                </div>
+                <div class="lista-cartoes" id="coluna-pendente"></div>
+            </div>
+
+            <div class="coluna-kanban" data-status="em_andamento">
+                <div class="cabecalho-coluna">
+                    <h3 class="titulo-coluna">
+                        <svg class="icone-status" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12a7 7 0 1 1 2.5 5.36"/><path d="M5 12V7m0 5h5"/></svg>
+                        Em andamento
+                    </h3>
+                    <span class="contador-coluna" id="contagem-em_andamento">0</span>
+                </div>
+                <div class="lista-cartoes" id="coluna-em_andamento"></div>
+            </div>
+
+            <div class="coluna-kanban" data-status="finalizada">
+                <div class="cabecalho-coluna">
+                    <h3 class="titulo-coluna">
+                        <svg class="icone-status" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                        Finalizadas
+                    </h3>
+                    <span class="contador-coluna" id="contagem-finalizada">0</span>
+                </div>
+                <div class="lista-cartoes" id="coluna-finalizada"></div>
+            </div>
+
+            <div class="coluna-kanban" data-status="cancelada">
+                <div class="cabecalho-coluna">
+                    <h3 class="titulo-coluna">
+                        <svg class="icone-status" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6m0-6 6 6"/></svg>
+                        Canceladas
+                    </h3>
+                    <span class="contador-coluna" id="contagem-cancelada">0</span>
+                </div>
+                <div class="lista-cartoes" id="coluna-cancelada"></div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- VISTA: RELATÓRIOS E HISTÓRICO -->
+    <main id="vista-relatorios" class="secao-vista" style="display: none;">
+        <div class="barra-acoes">
+            <button class="botao botao-primario" onclick="exportarExcel()">Exportar Excel</button>
+            <button class="botao botao-perigo" onclick="exportarPDF()">Exportar PDF</button>
+        </div>
+
+        <div id="conteudo-relatorio" class="container-relatorio">
+
+            <div class="resumo-desempenho">
+                <div class="estatistica-destaque">
+                    <svg class="anel-progresso" width="88" height="88" viewBox="0 0 88 88">
+                        <circle cx="44" cy="44" r="38" fill="none" stroke="var(--cor-superficie-alta)" stroke-width="8"/>
+                        <circle id="circuloProgresso" cx="44" cy="44" r="38" fill="none" stroke="var(--cor-acao)" stroke-width="8" stroke-linecap="round" stroke-dasharray="238.76" stroke-dashoffset="238.76" transform="rotate(-90 44 44)"/>
+                    </svg>
+                    <div class="estatistica-destaque-texto">
+                        <span class="estatistica-destaque-rotulo">Taxa de resolução</span>
+                        <span class="estatistica-destaque-valor" id="estatisticaPercentual">0%</span>
+                        <span class="estatistica-destaque-legenda">Demandas finalizadas sobre o total</span>
+                    </div>
+                </div>
+
+                <div class="estatisticas-secundarias">
+                    <div class="estatistica-cartao">
+                        <span class="estatistica-rotulo">Total de demandas</span>
+                        <span class="estatistica-valor" id="estatisticaTotal">0</span>
+                    </div>
+                    <div class="estatistica-cartao">
+                        <span class="estatistica-rotulo">Resolvidas em até 24h</span>
+                        <span class="estatistica-valor" id="estatisticaRapidas">0</span>
+                    </div>
+                    <div class="estatistica-cartao">
+                        <span class="estatistica-rotulo">Resolvidas por mim</span>
+                        <span class="estatistica-valor" id="estatisticaMinhas">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grade-graficos">
+                <div class="grafico-caixa">
+                    <div class="grafico-cabecalho">
+                        <h3>Status das demandas</h3>
+                    </div>
+                    <div class="canvas-wrap">
+                        <canvas id="graficoStatus"></canvas>
+                    </div>
+                </div>
+                <div class="grafico-caixa">
+                    <div class="grafico-cabecalho">
+                        <h3>Desempenho dos resolutores</h3>
+                        <select id="filtroResolutor" class="select-filtro" onchange="atualizarGraficoResolutores()">
+                            <option value="all">Setor inteiro (consolidado)</option>
+                        </select>
+                    </div>
+                    <div class="canvas-wrap">
+                        <canvas id="graficoResolutores"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="historico-cabecalho">
+                <h3 class="historico-titulo">Histórico completo</h3>
+                <div class="historico-controles">
+                    <button class="botao botao-secundario botao-pequeno" onclick="excluirHistoricoSelecionado()">Limpar marcadas</button>
+                    <div class="historico-filtros">
+                        <select id="tipoFiltroExclusao" onchange="alternarCampoFiltro()">
+                            <option value="all">Todo o período</option>
+                            <option value="month">Por mês</option>
+                            <option value="day">Por dia</option>
+                        </select>
+                        <input type="month" id="filtroMes" style="display:none;">
+                        <input type="date" id="filtroDia" style="display:none;">
+                        <button class="botao botao-perigo botao-pequeno" onclick="excluirPorFiltro()">Limpar por filtro</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tabela-wrapper">
+                <table class="tabela-dados tabela-historico">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selecionarTudo" onclick="alternarSelecaoTudo(this)" title="Selecionar tudo"></th>
+                            <th>Visibilidade</th>
+                            <th>Título</th>
+                            <th>Status</th>
+                            <th>Prioridade</th>
+                            <th>Responsáveis</th>
+                            <th>Criado por</th>
+                            <th>Criado em</th>
+                            <th>Concluído por</th>
+                            <th>Concluído em</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpoTabelaHistorico"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL: NOVA DEMANDA -->
+    <div id="modalDemanda" class="modal">
+        <div class="modal-conteudo">
+            <div class="modal-cabecalho">
+                <h2>Nova demanda</h2>
+                <button class="fechar-modal" onclick="fecharModal()" aria-label="Fechar">&times;</button>
+            </div>
+            <form id="formularioDemanda">
+                <div class="grupo-campo">
+                    <label for="campoTitulo">Título</label>
+                    <input type="text" id="campoTitulo" required>
+                </div>
+                <div class="grupo-campo">
+                    <label for="campoDescricao">Descrição</label>
+                    <textarea id="campoDescricao" rows="3"></textarea>
+                </div>
+                <div class="grupo-campo">
+                    <label for="campoPrioridade">Prioridade</label>
+                    <select id="campoPrioridade">
+                        <option value="baixa">Baixa</option>
+                        <option value="media" selected>Média</option>
+                        <option value="alta">Alta</option>
+                    </select>
+                </div>
+                <div class="grupo-campo">
+                    <label for="campoResponsaveis">Responsáveis (opcional)</label>
+                    <input type="text" id="campoResponsaveis" placeholder="Ex: João, Maria (separe por vírgula)">
+                </div>
+                <div class="grupo-campo">
+                    <label for="campoPrazo">Prazo de entrega</label>
+                    <input type="date" id="campoPrazo">
+                </div>
+                <button type="submit" class="botao botao-primario botao-largura-total">Salvar demanda</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
